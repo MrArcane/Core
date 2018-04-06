@@ -1,0 +1,67 @@
+main: me.mrarcane.core.Main
+
+name: Core
+description: AlphaCrafters core plugin.
+version: 3.2
+author: MrArcane
+website: http://alphacrafters.net
+
+commands:
+  core:
+    description: Core command.
+  broadcast:
+    description: broadcast messages.
+    permission: core.broadcast
+    aliases: [shout]
+  dilly:
+    description: Dilly dilly!
+    aliases: [d]
+  links:
+    description: Shows all links for the websites.
+    aliases: [sites, websites]
+  vote:
+    description: Displays vote url
+  autobroadcast:
+    description: Auto broadcast command.
+    permission: core.autobroadcast
+    aliases: [ab]
+  spectate:
+    description: Spectator command.
+    permission: core.spectate
+    aliases: [argentina]
+  teleport:
+    description: Teleport command for spectator.
+    permission: core.spectate
+    aliases: [tp]
+  mail:
+    description: Send mail to a player.
+  seen:
+    description: See a players last time online.
+  rules:
+    description: Displays rules of the server
+  day:
+    description: Vote for day.
+  perks:
+    description: Turns donation perks on and off.
+    permission: core.perks
+  hat:
+    description: Wear a fancy hat
+  away:
+    description: Go afk.
+    aliases: [afk]
+  sendchat:
+    description: send a message to a player.
+    aliases: [sc]
+    permission: core.sendchat
+  setspawn:
+    description: Set the servers spawn point.
+    permission: core.spawn
+  setguestspawn:
+    description: Set the servers guests spawn
+    permission: core.spawn
+  staff:
+    description: display a list of staff members
+  adminmode:
+    description: Place yourself in admin mode.
+    permission: core.adminmode
+    aliases: [am]

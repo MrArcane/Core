@@ -1,0 +1,44 @@
+General:
+  Perks: true
+  Perks message: Perks are active.
+Tablist:
+  guest:
+    priority: 0
+    name: '&8{player}'
+  member:
+    priority: 1
+    name: '&7{player}'
+  supporter:
+    priority: 2
+    name: '&a{player}'
+  helper:
+    priority: 3
+    name: '&9{player}'
+  mod:
+    priority: 4
+    name: '&9{player}'
+  admin:
+    priority: 5
+    name: '&9{player}'
+  owner:
+    priority: 6
+    name: '&9{player}'
+Day switch:
+  Time: 15
+Rules:
+- 'Throw apples at Markaroli. '
+Links:
+- '&eWebsite navigation:'
+- '&7Forums: &ahttp://www.alphacrafters.net'
+- '&7Store: &ahttp://www.store.alphacrafters.net'
+- '&7Forums: &ahttp://www.alphacrafters.net/vote.php'
+- '&7Discord: &ahttp://discord.gg/H4CeYX3'
+Vote:
+  Commands:
+  - sendchat {player} Vote recieved.
+New login:
+- '&bWelcome to the world, &7{player}.'
+Broadcast:
+  Interval: 15 #Time in minutes
+  Messages:
+  - '&cDefault message for auto broadcast system'
