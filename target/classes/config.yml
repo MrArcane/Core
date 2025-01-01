@@ -1,0 +1,27 @@
+Applications:
+  Settings:
+    Accept:
+      Announce: true
+      Announcement: "&a[player] &7Has just been accepted into the server!"
+      Rank: slime
+      Commands:
+        - ''
+      Chats:
+        - "&7Welcome to the server! &a[player]!"
+    Deny:
+      Announce: false
+      Announcement: "&c[player]'s &7Application has been &cdenied!"
+      Ban: true
+      Chats:
+        - "&cYour application has been denied."
+  Questions:
+    - 'How old are you?:'
+    - 'How many servers have you been banned on and why?:'
+    - 'Do you attend to become a staff member at some point?:'
+    - 'Are you gonna follow the rules? Reply with answer and secret word:'
+Ranks:
+  Player:
+    Hierarchy: 100
+    Description: Regular player.
+    Default: true
+    Prefix: '[Player]'

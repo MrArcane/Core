@@ -1,0 +1,60 @@
+Completed_message:
+  - "&e&m                                                                             "
+  - "&aTASK COMPLETE!"
+  - "&7Good job, You've completed the task: &c%TASK%"
+  - "&7You received the following rewards:"
+
+  - "&e&m                                                                             "
+Tasks:
+  Mine_diamonds:
+    Description: Mine 5 Diamond ore
+    Type: BLOCK_BREAK
+    Icon: diamond_ore
+    GUI_LORE:
+      - '&c%DESC%'
+      - ' '
+      - '      &2REWARDS'
+      - '&e&m                       '
+      - '&aDiamond x1'
+      - '&aIron ingot x 10'
+      - '&aAnother home placement'
+      - '&e&m                       '
+      - ' '
+      - '&cLeft-click to start task.'
+    Repeatable: true
+    Requirements:
+      Mine:
+        Block: diamond_ore
+        Amount: 5
+    Rewards:
+      Items:
+        DIAMOND:
+          Count: 1
+        iron_ingot:
+          Count: 10
+      Commands:
+        Gives a home: "maxhomes set 1 [player]"
+
+
+  Introduce_yourself:
+    Description: Say hi in chat!
+    Icon: glass
+    Type: CHAT
+    Repeatable: false
+    GUI_LORE:
+      - '&c%DESC%'
+      - ' '
+      - '      &2REWARDS'
+      - '&e&m                       '
+      - '&aIron sword x 1'
+      - '&e&m                       '
+      - ' '
+      - '&cLeft-click to start task.'
+    Requirements:
+      Word:
+        String: "Hi"
+        Amount: 1
+    Rewards:
+      Items:
+        iron_sword:
+          Count: 1
