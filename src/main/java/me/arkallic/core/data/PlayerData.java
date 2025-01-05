@@ -80,24 +80,30 @@ public class PlayerData {
         String DISPLAYNAME = "Settings.Display-name";
     }
 
-    /**
-     * Booleans
-     */
-
     public boolean exists() {
         return this.config.getFile().exists();
     }
 
-    /**
-     * Getters
-     */
-
     public HashMap<String, Home> getHomes() {
         return homes;
     }
+
+
+
     public Home getHome(String name) {
         return homes.get(name);
     }
+    public void setHome(String name, Location location) {
+        Home home = new Home(name, location);
+        homes.putIfAbsent(name, home);
+        getConfig().set(defaultData.HOMES + name, home.getLocation());
+    }
+    public void deleteHome(Home home) {
+        homes.remove(home.getName());
+        getConfig().set(defaultData.HOMES + home.getName(), null);
+    }
+
+
 
     public int getMaxHomes() {
 
@@ -107,14 +113,29 @@ public class PlayerData {
 
         return this.config.getConfig().getInt(defaultData.MAX_HOMES);
     }
+    public void setMaxHomes(int amount) {
+        this.config.getConfig().set(defaultData.MAX_HOMES, amount);
+    }
+
+
 
     public String getDisplayName() {
         return this.getConfig().getString(defaultData.DISPLAYNAME);
     }
+    public void setDisplayName(String name) {
+        getConfig().set(defaultData.DISPLAYNAME, name);
+    }
+
+
 
     public String getRank() {
         return getConfig().getString(defaultData.RANK);
     }
+    public void setRank(String name) {
+        getConfig().set(defaultData.RANK + name, name);
+    }
+
+
 
     public int getCurrentHomes() {
 
@@ -123,33 +144,6 @@ public class PlayerData {
         }
 
         return getConfig().getConfigurationSection(defaultData.HOMES).getKeys(false).size();
-    }
-
-    /**
-     * Setter
-     */
-
-    public void setHome(String name, Location location) {
-        Home home = new Home(name, location);
-        homes.putIfAbsent(name, home);
-        getConfig().set(defaultData.HOMES + name, home.getLocation());
-    }
-
-    public void deleteHome(Home home) {
-        homes.remove(home.getName());
-        getConfig().set(defaultData.HOMES + home.getName(), null);
-    }
-
-    public void setMaxHomes(int amount) {
-        this.config.getConfig().set(defaultData.MAX_HOMES, amount);
-    }
-
-    public void setDisplayName(String name) {
-        getConfig().set(defaultData.DISPLAYNAME, name);
-    }
-
-    public void setRank(String name) {
-        getConfig().set(defaultData.RANK + name, name);
     }
 }
 
