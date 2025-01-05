@@ -1,6 +1,6 @@
 package me.arkallic.core.util;
 
-public class Utils {
+public class IntUtil {
 
     public static boolean isInt(String s) {
         try {
