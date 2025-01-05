@@ -2,13 +2,10 @@ package me.arkallic.core.manager;
 
 import me.arkallic.core.Core;
 import me.arkallic.core.model.Home;
-import me.arkallic.core.model.PlayerData;
-import me.arkallic.core.model.PlayerData.defaultData;
+import me.arkallic.core.data.PlayerData;
 import me.arkallic.core.model.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -18,24 +15,17 @@ import static me.arkallic.core.handler.MessageHandler.send;
 
 public class PlayerDataManager {
     private final HashMap<UUID, PlayerData> playerData = new HashMap<>();
-    private final RankManager rankManager;
+    private final RankDataManager rankDataManager;
     private final Core core;
 
-    public PlayerDataManager(RankManager rankManager, Core core) {
-        this.rankManager = rankManager;
+    public PlayerDataManager(RankDataManager rankDataManager, Core core) {
+        this.rankDataManager = rankDataManager;
         this.core = core;
     }
 
     public void register(UUID uuid) {
-        PlayerData player = new PlayerData(uuid, core);
         playerData.computeIfAbsent(uuid, _ -> new PlayerData(uuid, core));
-        checkDefaultValues(uuid);
-
-
-        for (String s : this.getHomesSection(uuid).getKeys(false)) {
-            Home home = new Home(s, player.getLocation(defaultData.HOMES + "." + s));
-            this.getHomes(uuid).put(home.getName(), home);
-        }
+        playerData.get(uuid).loadDefaultData(uuid, rankDataManager.getDefault().getName());
     }
 
     public void unregister(UUID uuid) {
@@ -44,25 +34,21 @@ public class PlayerDataManager {
         this.playerData.remove(uuid);
     }
 
-    private void checkDefaultValues(UUID uuid) {
-        FileConfiguration cfg = this.getPlayerData(uuid).getHandler().getConfig();
-        final PlayerData playerData = this.getPlayerData(uuid);
+    public void rankUp(UUID uuid) {
+        PlayerData pd = getPlayerData(uuid);
+        Rank currentRank = rankDataManager.getRank(pd.getRank());
+        Rank nextRank = null;
+        int currentHierarchy = currentRank.getHierarchy();
+        int nextHierarchy;
 
-        if (!cfg.contains(defaultData.RANK)) {
-            playerData.set(defaultData.RANK, "Player");
+        for (Rank rank : rankDataManager.getRanks()) {
+            nextHierarchy = rank.getHierarchy();
+            if (currentHierarchy > nextHierarchy) {
+                nextRank = rank;
+            }
         }
+        pd.setRank(nextRank.getName());
 
-        if (!cfg.contains(defaultData.MAX_HOMES)) {
-            playerData.set(defaultData.MAX_HOMES, 1);
-        }
-
-        if (!cfg.contains(defaultData.HOMES)) {
-            playerData.setConfigurationSection(defaultData.HOMES);
-        }
-
-        if (!cfg.contains(defaultData.DISPLAYNAME)) {
-            playerData.set(defaultData.DISPLAYNAME, Bukkit.getPlayer(uuid).getName());
-        }
     }
 
     /**
@@ -70,7 +56,7 @@ public class PlayerDataManager {
      */
 
     public boolean playerDataExists(UUID uuid) {
-        return this.getPlayerData(uuid).getHandler().getFile().exists();
+        return this.getPlayerData(uuid).exists();
     }
 
 
@@ -78,9 +64,6 @@ public class PlayerDataManager {
      * GETTERS
      */
 
-    public FileConfiguration getConfig(UUID uuid) {
-    return getPlayerData(uuid).getHandler().getConfig();
-    }
 
 
     public PlayerData getPlayerData(UUID playerUUID) {
@@ -89,11 +72,11 @@ public class PlayerDataManager {
 
 
     public Rank getRank(UUID uuid) {
-        return rankManager.getRank(getPlayerData(uuid).getString(defaultData.RANK));
+        return rankDataManager.getRank(playerData.get(uuid).getRank());
     }
 
     public String getDisplayName(UUID uuid) {
-        return getPlayerData(uuid).getString(defaultData.DISPLAYNAME);
+        return getPlayerData(uuid).getDisplayName();
     }
 
 
@@ -102,7 +85,7 @@ public class PlayerDataManager {
      */
 
     public void setRank(UUID uuid, String name, boolean showRankChange) {
-        getPlayerData(uuid).set(defaultData.RANK, name);
+        getPlayerData(uuid).setRank(name);
         if (showRankChange) {
             Player player = Bukkit.getPlayer(uuid);
             send(player,  String.format("&7Your rank is now: &a%s", name));
@@ -110,7 +93,7 @@ public class PlayerDataManager {
     }
 
     public void setDisplayName(UUID uuid, String name) {
-        getPlayerData(uuid).set(defaultData.DISPLAYNAME, name);
+        getPlayerData(uuid).setDisplayName(name);
     }
 
 
@@ -126,40 +109,34 @@ public class PlayerDataManager {
     }
 
     public Home getHome(UUID uuid, String name) {
-        for (Home h : getHomes(uuid).values()) {
-            if (h.getName().equalsIgnoreCase(name)) {
-                return h;
-            }
-        }
-        return null;
+        return getPlayerData(uuid).getHome(name);
     }
 
 
     public int getMaxHomes(UUID uuid) {
-        return this.getConfig(uuid).getInt(defaultData.MAX_HOMES);
+        return getPlayerData(uuid).getMaxHomes();
     }
 
-    public ConfigurationSection getHomesSection(UUID uuid) {
-        return getPlayerData(uuid).getConfigurationSection(defaultData.HOMES);
+    public int getCurrentHomes(UUID uuid) {
+        return this.playerData.get(uuid).getCurrentHomes();
     }
+
 
     public HashMap<String, Home> getHomes(UUID uuid) {
         return this.playerData.get(uuid).getHomes();
     }
 
     public void setMaxHomes(UUID uuid, int amount) {
-        getPlayerData(uuid).set(defaultData.MAX_HOMES, amount);
+        getPlayerData(uuid).setMaxHomes(amount);
     }
 
     public void setHome(UUID uuid, String name, Location location) {
-        Home home = new Home(name.toLowerCase(), location);
-        getPlayerData(uuid).set(defaultData.HOMES + "." + name.toLowerCase(), location);
-        getHomes(uuid).put(home.getName(), home);
+        getPlayerData(uuid).setHome(name, location);
     }
 
     public void deleteHome(UUID uuid, String name) {
         Home home = getHome(uuid, name);
         getHomes(uuid).remove(home.getName());
-        getPlayerData(uuid).set(defaultData.HOMES + "." + name.toLowerCase(), null);
+        getPlayerData(uuid).deleteHome(home);
     }
 }

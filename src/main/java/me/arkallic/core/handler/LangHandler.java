@@ -2,18 +2,19 @@ package me.arkallic.core.handler;
 
 
 import me.arkallic.core.Core;
+import me.arkallic.core.wrappers.YMLFileWrapper;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.List;
 
 public class LangHandler {
-    private final FileHandler fileHandler;
+    private final me.arkallic.core.wrappers.YMLFileWrapper YMLFileWrapper;
     private final Core core;
     public String HOME_SET, HOME_MODIFIED, INVALID_HOME, NO_HOMES, HOME_LIMIT, TELEPORT_HOME, HOME_DELETED, WELCOME_BACK, NEW_PLAYER;
 
     public LangHandler(Core core) {
         this.core = core;
-        this.fileHandler = new FileHandler("", "lang.yml", core);
+        this.YMLFileWrapper = new YMLFileWrapper("", "lang.yml", core);
 
         //Set messages
         this.HOME_SET = getString("HOME_SET");
@@ -28,21 +29,21 @@ public class LangHandler {
     }
 
     public void initialize() {
-        if (!fileHandler.getFile().exists()) {
+        if (!YMLFileWrapper.getFile().exists()) {
             core.saveResource("lang.yml", false);
         }
     }
 
     public List<String> getList(String path) {
-        return this.fileHandler.getConfig().getStringList(path);
+        return this.YMLFileWrapper.getConfig().getStringList(path);
     }
 
     public String getString(String path) {
-        return this.fileHandler.getConfig().getString(path);
+        return this.YMLFileWrapper.getConfig().getString(path);
     }
 
     public ConfigurationSection getConfigurationSection(String path) {
-        return this.fileHandler.getConfig().getConfigurationSection(path);
+        return this.YMLFileWrapper.getConfig().getConfigurationSection(path);
     }
 
 

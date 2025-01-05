@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 
 import static me.arkallic.core.handler.MessageHandler.send;
-import static me.arkallic.core.model.PlayerData.*;
 
 public class HomeCommand implements CommandExecutor {
 

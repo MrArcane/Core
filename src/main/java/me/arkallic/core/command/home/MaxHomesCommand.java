@@ -42,7 +42,7 @@ public class MaxHomesCommand implements CommandExecutor {
                 return true;
             }
             int i = Integer.parseInt(args[1]);
-            if (args[0].equalsIgnoreCase("set")) {
+            if (args[0].equalsIgnoreCase("add")) {
                 playerDataManager.setMaxHomes(target.getUniqueId(), MAX_HOMES + i);
                 send(p, String.format("&7You modified &a%s &7home limit to: &c%s", target.getName(), MAX_HOMES + i));
                 return true;

@@ -1,9 +1,8 @@
 package me.arkallic.core.listener;
 
-import me.arkallic.core.Core;
 import me.arkallic.core.handler.LangHandler;
 import me.arkallic.core.manager.PlayerDataManager;
-import me.arkallic.core.manager.RankManager;
+import me.arkallic.core.manager.RankDataManager;
 import me.arkallic.core.model.Rank;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,14 +16,12 @@ import static me.arkallic.core.handler.MessageHandler.send;
 public class PlayerDataListener implements Listener {
     private final PlayerDataManager playerDataManager;
     private final LangHandler langHandler;
-    private final RankManager rankManager;
-    private final Core core;
+    private final RankDataManager rankDataManager;
 
-    public PlayerDataListener(PlayerDataManager playerDataManager, LangHandler langHandler, RankManager rankManager, Core core) {
+    public PlayerDataListener(PlayerDataManager playerDataManager, LangHandler langHandler, RankDataManager rankDataManager) {
         this.playerDataManager = playerDataManager;
         this.langHandler = langHandler;
-        this.rankManager = rankManager;
-        this.core = core;
+        this.rankDataManager = rankDataManager;
     }
     @EventHandler
     private void playerJoin(PlayerJoinEvent e) {
@@ -34,7 +31,7 @@ public class PlayerDataListener implements Listener {
             send(p, langHandler.WELCOME_BACK.replace("%PLAYER%", playerDataManager.getDisplayName(p.getUniqueId())));
             return;
         }
-        for (Rank r : this.rankManager.getRanks()) {
+        for (Rank r : this.rankDataManager.getRanks()) {
             if (r.isDefault()) {
                 playerDataManager.setRank(p.getUniqueId(), r.getName(), false);
             }

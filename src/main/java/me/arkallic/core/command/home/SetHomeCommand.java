@@ -2,7 +2,6 @@ package me.arkallic.core.command.home;
 
 import me.arkallic.core.handler.LangHandler;
 import me.arkallic.core.manager.PlayerDataManager;
-import me.arkallic.core.model.PlayerData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -25,7 +24,7 @@ public class SetHomeCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
 
         if (sender instanceof Player p) {
-            int currentHomes = playerDataManager.getHomesSection(p.getUniqueId()).getKeys(false).size();
+            int currentHomes = playerDataManager.getCurrentHomes(p.getUniqueId());
             int maxHomes = playerDataManager.getMaxHomes(p.getUniqueId());
 
             if (args.length == 0) {

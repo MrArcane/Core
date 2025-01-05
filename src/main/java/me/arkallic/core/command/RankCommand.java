@@ -1,6 +1,6 @@
 package me.arkallic.core.command;
 
-import me.arkallic.core.manager.RankManager;
+import me.arkallic.core.manager.RankDataManager;
 import me.arkallic.core.model.Rank;
 import me.arkallic.core.manager.PlayerDataManager;
 import org.bukkit.Bukkit;
@@ -15,10 +15,10 @@ import static me.arkallic.core.handler.MessageHandler.*;
 public class RankCommand implements CommandExecutor {
 
     private final PlayerDataManager playerDataManager;
-    private final RankManager rankManager;
+    private final RankDataManager rankDataManager;
 
-    public RankCommand(RankManager rankManager, PlayerDataManager playerDataManager) {
-        this.rankManager = rankManager;
+    public RankCommand(RankDataManager rankDataManager, PlayerDataManager playerDataManager) {
+        this.rankDataManager = rankDataManager;
         this.playerDataManager = playerDataManager;
     }
 
@@ -37,7 +37,7 @@ public class RankCommand implements CommandExecutor {
 
         if (args[0].equalsIgnoreCase("list")) {
             if (sender instanceof Player) {
-                for (Rank rank : rankManager.getRanks()) {
+                for (Rank rank : rankDataManager.getRanks()) {
                     send(sender, String.format("&7[&2%s&7]:", rank.getName()));
                     send(sender, String.format("&7Description &a%s", rank.getDescription()));
                     if (rank.getPrefix() == null) {

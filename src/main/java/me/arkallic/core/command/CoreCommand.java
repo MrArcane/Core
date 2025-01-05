@@ -1,7 +1,7 @@
 package me.arkallic.core.command;
 
 import me.arkallic.core.manager.PlayerDataManager;
-import me.arkallic.core.model.PlayerData;
+import me.arkallic.core.data.PlayerData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

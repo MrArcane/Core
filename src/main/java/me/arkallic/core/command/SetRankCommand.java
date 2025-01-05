@@ -1,8 +1,7 @@
 package me.arkallic.core.command;
 
-import me.arkallic.core.Core;
 import me.arkallic.core.manager.PlayerDataManager;
-import me.arkallic.core.manager.RankManager;
+import me.arkallic.core.manager.RankDataManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,10 +14,10 @@ import static me.arkallic.core.handler.MessageHandler.send;
 public class SetRankCommand implements CommandExecutor {
 
     private final PlayerDataManager playerDataManager;
-    private final RankManager rankManager;
+    private final RankDataManager rankDataManager;
 
-    public SetRankCommand(RankManager rankManager, PlayerDataManager playerDataManager) {
-        this.rankManager = rankManager;
+    public SetRankCommand(RankDataManager rankDataManager, PlayerDataManager playerDataManager) {
+        this.rankDataManager = rankDataManager;
         this.playerDataManager = playerDataManager;
     }
     @Override
@@ -30,11 +29,11 @@ public class SetRankCommand implements CommandExecutor {
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target != null) {
-            if (rankManager.getRank(args[1]) == null) {
+            if (rankDataManager.getRank(args[1]) == null) {
                 send(sender, "&4That rank is invalid!");
                 return true;
             }
-            String rank = rankManager.getRank(args[1]).getName();
+            String rank = rankDataManager.getRank(args[1]).getName();
             playerDataManager.setRank(target.getUniqueId(), rank, true);
             send(sender, String.format("&7You've set: &a%s's &7rank to: &c%s", target.getName(), playerDataManager.getRank(target.getUniqueId()).getName()));
             return true;
