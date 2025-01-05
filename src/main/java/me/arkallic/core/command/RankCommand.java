@@ -1,5 +1,6 @@
 package me.arkallic.core.command;
 
+import me.arkallic.core.data.PlayerData;
 import me.arkallic.core.manager.RankDataManager;
 import me.arkallic.core.model.Rank;
 import me.arkallic.core.manager.PlayerDataManager;
@@ -24,6 +25,14 @@ public class RankCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
+
+        if (!(sender instanceof Player)) {
+            send(sender, "Only players can run this command.");
+            return true;
+        }
+
+        Player player = (Player) sender;
+        PlayerData pd = playerDataManager.getPlayerData(player.getUniqueId());
 
         if (args.length == 0) {
             send(sender, "&7-".repeat(15));
@@ -54,7 +63,7 @@ public class RankCommand implements CommandExecutor {
         if (args.length == 1) {
             Player target = Bukkit.getPlayer(args[0]);
             assert target != null;
-            send(sender, playerDataManager.getRank(target.getUniqueId()).getName());
+            send(sender, pd.getRank());
             return true;
         }
 

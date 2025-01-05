@@ -1,6 +1,7 @@
 package me.arkallic.core.listener;
 
-import me.arkallic.core.handler.LangHandler;
+import me.arkallic.core.data.PlayerData;
+import me.arkallic.core.data.LangData;
 import me.arkallic.core.manager.PlayerDataManager;
 import me.arkallic.core.manager.RankDataManager;
 import me.arkallic.core.model.Rank;
@@ -15,28 +16,30 @@ import static me.arkallic.core.util.MessageUtil.send;
 
 public class PlayerDataListener implements Listener {
     private final PlayerDataManager playerDataManager;
-    private final LangHandler langHandler;
+    private final LangData langData;
     private final RankDataManager rankDataManager;
 
-    public PlayerDataListener(PlayerDataManager playerDataManager, LangHandler langHandler, RankDataManager rankDataManager) {
+    public PlayerDataListener(PlayerDataManager playerDataManager, LangData langData, RankDataManager rankDataManager) {
         this.playerDataManager = playerDataManager;
-        this.langHandler = langHandler;
+        this.langData = langData;
         this.rankDataManager = rankDataManager;
     }
     @EventHandler
     private void playerJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         playerDataManager.register(p.getUniqueId());
+        PlayerData pd = playerDataManager.getPlayerData(p.getUniqueId());
+
         if (p.hasPlayedBefore()) {
-            send(p, langHandler.WELCOME_BACK.replace("%PLAYER%", playerDataManager.getDisplayName(p.getUniqueId())));
+            send(p, langData.welcomeBack.replace("%PLAYER%", pd.getDisplayName()));
             return;
         }
         for (Rank r : this.rankDataManager.getRanks()) {
             if (r.isDefault()) {
-                playerDataManager.setRank(p.getUniqueId(), r.getName(), false);
+                pd.setRank(r.getName());
             }
         }
-            broadcast(langHandler.NEW_PLAYER.replace("%PLAYER%", playerDataManager.getDisplayName(p.getUniqueId())));
+            broadcast(langData.newPlayer.replace("%PLAYER%", pd.getDisplayName()));
     }
 
     @EventHandler

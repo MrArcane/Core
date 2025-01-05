@@ -1,5 +1,6 @@
 package me.arkallic.core.command;
 
+import me.arkallic.core.data.PlayerData;
 import me.arkallic.core.manager.PlayerDataManager;
 import me.arkallic.core.manager.RankDataManager;
 import org.bukkit.Bukkit;
@@ -27,17 +28,21 @@ public class SetRankCommand implements CommandExecutor {
             return true;
         }
 
-        Player target = Bukkit.getPlayer(args[0]);
-        if (target != null) {
-            if (rankDataManager.getRank(args[1]) == null) {
-                send(sender, "&4That rank is invalid!");
-                return true;
-            }
-            String rank = rankDataManager.getRank(args[1]).getName();
-            playerDataManager.setRank(target.getUniqueId(), rank, true);
-            send(sender, String.format("&7You've set: &a%s's &7rank to: &c%s", target.getName(), playerDataManager.getRank(target.getUniqueId()).getName()));
+        if (Bukkit.getPlayer(args[0]) == null) {
+            send(sender, args[0]+ " is offline.");
             return true;
         }
-        return false;
+
+        Player target = Bukkit.getPlayer(args[0]);
+        PlayerData pd = playerDataManager.getPlayerData(target.getUniqueId());
+
+        if (rankDataManager.getRank(args[1]) == null) {
+            send(sender, "&4That rank is invalid!");
+            return true;
+        }
+        String rank = rankDataManager.getRank(args[1]).getName();
+        pd.setRank(rank);
+        send(sender, String.format("&7You've set: &a%s's &7rank to: &c%s", target.getName(), pd.getRank()));
+        return true;
     }
 }

@@ -1,31 +1,38 @@
 package me.arkallic.core.command.home;
 
-import me.arkallic.core.handler.LangHandler;
+import me.arkallic.core.data.PlayerData;
+import me.arkallic.core.data.LangData;
 import me.arkallic.core.manager.PlayerDataManager;
+import me.arkallic.core.model.Home;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
+
 import static me.arkallic.core.util.MessageUtil.send;
 
 public class DeleteHomeCommand implements CommandExecutor {
 
     private final PlayerDataManager playerDataManager;
-    private final LangHandler langHandler;
+    private final LangData langData;
 
-    public DeleteHomeCommand(PlayerDataManager playerDataManager, LangHandler langHandler) {
+    public DeleteHomeCommand(PlayerDataManager playerDataManager, LangData langData) {
         this.playerDataManager = playerDataManager;
-        this.langHandler = langHandler;
+        this.langData = langData;
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
 
         if (sender instanceof Player p) {
-            if (!playerDataManager.hasHomes(p.getUniqueId())) {
-                send(p,  langHandler.NO_HOMES);
+            UUID uuid = p.getUniqueId();
+            PlayerData pd = playerDataManager.getPlayerData(uuid);
+
+            if (pd.getHomes().isEmpty()) {
+                send(p,  langData.noHomes);
                 return true;
             }
 
@@ -35,13 +42,14 @@ public class DeleteHomeCommand implements CommandExecutor {
             }
 
             String input = args[0].toLowerCase();
-            if (!playerDataManager.homeExists(p.getUniqueId(), input)) {
-                send(p,  langHandler.INVALID_HOME);
+            if (!pd.getHomes().containsKey(input)) {
+                send(p,  langData.invalidHome);
                 return true;
             }
 
-            playerDataManager.deleteHome(p.getUniqueId(), input);
-            send(p,  langHandler.HOME_DELETED.replace("%HOME%", input));
+            Home home = pd.getHome(input);
+            pd.deleteHome(home);
+            send(p,  langData.homeDeleted.replace("%HOME%", input));
             return true;
         }
         return false;
