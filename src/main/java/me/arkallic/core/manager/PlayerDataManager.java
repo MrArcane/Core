@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.UUID;
 
-import static me.arkallic.core.handler.MessageHandler.send;
+import static me.arkallic.core.util.MessageUtil.send;
 
 public class PlayerDataManager {
     private final HashMap<UUID, PlayerData> playerData = new HashMap<>();

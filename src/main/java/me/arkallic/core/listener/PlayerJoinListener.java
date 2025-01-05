@@ -5,7 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import static me.arkallic.core.handler.MessageHandler.send;
+import static me.arkallic.core.util.MessageUtil.send;
 
 public class PlayerJoinListener implements Listener {
 

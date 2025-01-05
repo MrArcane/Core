@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-import static me.arkallic.core.handler.MessageHandler.send;
+import static me.arkallic.core.util.MessageUtil.send;
 
 public class CoreCommand implements CommandExecutor {
     private final PlayerDataManager playerDataManager;

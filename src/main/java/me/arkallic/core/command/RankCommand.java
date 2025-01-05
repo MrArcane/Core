@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import static me.arkallic.core.handler.MessageHandler.*;
+import static me.arkallic.core.util.MessageUtil.*;
 
 public class RankCommand implements CommandExecutor {
 

@@ -10,8 +10,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import static me.arkallic.core.handler.MessageHandler.broadcast;
-import static me.arkallic.core.handler.MessageHandler.send;
+import static me.arkallic.core.util.MessageUtil.broadcast;
+import static me.arkallic.core.util.MessageUtil.send;
 
 public class PlayerDataListener implements Listener {
     private final PlayerDataManager playerDataManager;

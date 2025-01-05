@@ -10,8 +10,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import static me.arkallic.core.handler.MessageHandler.log;
-import static me.arkallic.core.handler.MessageHandler.send;
+import static me.arkallic.core.util.MessageUtil.log;
+import static me.arkallic.core.util.MessageUtil.send;
 
 public class MaxHomesCommand implements CommandExecutor {
 
@@ -54,38 +54,39 @@ public class MaxHomesCommand implements CommandExecutor {
                 return true;
             }
             return true;
-        } else {
-
-            //Console
-
-            if (args.length == 0) {
-                log("&cUSAGE: &7/maxhomes [ADD/REMOVE] [INT] [PLAYER]");
-                return true;
-            }
-            OfflinePlayer target = Bukkit.getOfflinePlayer(args[2]);
-            int MAX_HOMES = playerDataManager.getMaxHomes(target.getUniqueId());
-
-            if (!playerDataManager.playerDataExists(target.getUniqueId())) {
-                log("That player doesn't exist!");
-                return true;
-            }
-            if (!Utils.isInt(args[1])) {
-                log("&cUSAGE: &7/maxhomes [ADD/REMOVE] [AMOUNT] [PLAYER]");
-                return true;
-            }
-            int i = Integer.parseInt(args[1]);
-            if (args[0].equalsIgnoreCase("set")) {
-                playerDataManager.setMaxHomes(target.getUniqueId(), MAX_HOMES + i);
-                log(String.format("&7You modified &a%s &7home limit to: &c%s", target.getName(), MAX_HOMES + i));
-                return true;
-            }
-
-            if (args[0].equalsIgnoreCase("remove")) {
-                playerDataManager.setMaxHomes(target.getUniqueId(), MAX_HOMES - i);
-                log(String.format("&7You modified &a%s &7home limit to: &c%s", target.getName(), MAX_HOMES - i));
-                return true;
-            }
-            return false;
         }
+
+        //Console
+        if (args.length == 0) {
+            log("&cUSAGE: /maxhomes [ADD/REMOVE] [INT] [PLAYER]");
+            return true;
+        }
+        OfflinePlayer target = Bukkit.getOfflinePlayer(args[2]);
+        int MAX_HOMES = playerDataManager.getMaxHomes(target.getUniqueId());
+
+        if (!playerDataManager.playerDataExists(target.getUniqueId())) {
+            log("That player doesn't exist!");
+            return true;
+        }
+
+        if (!Utils.isInt(args[1])) {
+            log("USAGE: maxhomes [ADD/REMOVE] [AMOUNT] [PLAYER]");
+            return true;
+        }
+
+        int i = Integer.parseInt(args[1]);
+
+        if (args[0].equalsIgnoreCase("set")) {
+            playerDataManager.setMaxHomes(target.getUniqueId(), MAX_HOMES + i);
+            log(String.format("You modified %s home limit to: &c%s", target.getName(), MAX_HOMES + i));
+            return true;
+        }
+
+        if (args[0].equalsIgnoreCase("remove")) {
+            playerDataManager.setMaxHomes(target.getUniqueId(), MAX_HOMES - i);
+            log(String.format("You modified %s &7home limit to: %s", target.getName(), MAX_HOMES - i));
+            return true;
+        }
+        return false;
     }
 }
