@@ -9,20 +9,22 @@ import java.io.File;
 import java.io.IOException;
 
 public class YMLFileWrapper {
-    private final String DIR, NAME;
     private final File file;
-    private final FileConfiguration CONFIG;
-    private final Core core;
+    private final FileConfiguration config;
 
     public YMLFileWrapper(String dir, String name, Core core)  {
-        this.DIR = dir;
-        this.NAME = name;
-        this.core = core;
-        this.file = new File(core.getDataFolder() + File.separator + getDir(), getName());
-        CONFIG = YamlConfiguration.loadConfiguration(file);
+        this.file = new File(core.getDataFolder() + File.separator + dir, name);
+
+        File directory = file.getParentFile();
+
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        config = YamlConfiguration.loadConfiguration(file);
     }
 
-    public void saveFile() throws IOException {
+    public void save() throws IOException {
         getConfig().save(file);
     }
 
@@ -31,13 +33,14 @@ public class YMLFileWrapper {
         return file;
     }
     public FileConfiguration getConfig() {
-        return CONFIG;
-    }
-    public String getDir() {
-        return DIR;
+        return config;
     }
 
-    public @NotNull String getName() {
-        return NAME;
+    public File getDirectory() {
+        return file.getParentFile();
+    }
+
+    public String getName() {
+        return file.getName();
     }
 }
