@@ -1,16 +1,11 @@
 #HOME SYSTEM
-HOME_SET: "&7Home: &a%HOME% &7set to your location!"
-HOME_MODIFIED: "&7Home: &a%HOME% &7modified to your location!"
-INVALID_HOME: "&cThat home is invalid!"
-NO_HOMES: "&cYou don't have any homes set!"
-HOME_LIMIT: "&cYour home limit has been used!"
-TELEPORT_HOME: "&7Welcome to home: &a%HOME%"
-HOME_DELETED: "&7Home: &a%HOME% &7was deleted successfully!"
+home_set: "&7Home: &a%HOME% &7set to your location!"
+home_modified: "&7Home: &a%HOME% &7modified to your location!"
+invalid_home: "&cThat home is invalid!"
+no_homes: "&cYou don't have any homes set!"
+home_limit: "&cYour home limit has been used!"
+teleport_home: "&7Welcome to home: &a%HOME%"
+home_deleted: "&7Home: &a%HOME% &7was deleted successfully!"
 #MISC
-NEW_PLAYER: "&aWelcome to the server &c%PLAYER%"
-WELCOME_BACK: "&cWelcome back, &7%PLAYER%!"
-
-TASKS:
-  NAME: '&a%TASK%'
-  LORE:
-    - '%DESCRIPTION%'
+new_player: "&aWelcome to the server &c%PLAYER%"
+welcome_back: "&cWelcome back, &7%PLAYER%!"
