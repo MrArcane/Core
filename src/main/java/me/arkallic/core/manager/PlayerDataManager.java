@@ -1,11 +1,10 @@
 package me.arkallic.core.manager;
 
 import me.arkallic.core.Core;
+import me.arkallic.core.data.LangData;
 import me.arkallic.core.data.PlayerData;
 import me.arkallic.core.model.Home;
-import me.arkallic.core.model.Rank;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
@@ -18,15 +17,19 @@ public class PlayerDataManager {
     private final HashMap<UUID, PlayerData> playerData = new HashMap<>();
     private final RankDataManager rankDataManager;
     private final Core core;
+    private final LangData langData;
+    private final EconomyManager economyManager;
 
-    public PlayerDataManager(RankDataManager rankDataManager, Core core) {
+    public PlayerDataManager(RankDataManager rankDataManager, LangData langData, EconomyManager economyManager, Core core) {
         this.rankDataManager = rankDataManager;
         this.core = core;
+        this.langData = langData;
+        this.economyManager = economyManager;
     }
 
     public void register(UUID uuid) {
-        int defaultMaxHomes = core.getConfig().getInt(PlayerData.defaultData.MAX_HOMES);
-        int defaultCurrency = core.getConfig().getInt(PlayerData.defaultData.currency);
+        int defaultMaxHomes = core.getConfig().getInt(PlayerData.defaultData.max_homes);
+        int defaultCurrency = core.getConfig().getInt(PlayerData.defaultData.coins);
 
         playerData.computeIfAbsent(uuid, _ -> new PlayerData(uuid, core));
         playerData.get(uuid).setDefaultData(uuid, rankDataManager.getDefault().getName(), defaultMaxHomes, defaultCurrency);
@@ -51,6 +54,19 @@ public class PlayerDataManager {
         return this.getPlayerData(uuid).exists();
     }
 
+
+    public void teleportHome(UUID uuid, Home home, int cost) {
+        Player player = Bukkit.getPlayer(uuid);
+        PlayerData pd = this.playerData.get(uuid);
+        if (pd.getCoins() < cost) {
+            send(player, String.format("&c&lNot enough coins to teleport home! &f%s &ccoins required.", cost));
+            return;
+        }
+        player.teleport(home.getLocation());
+        pd.setCoins(pd.getCoins() - cost);
+        send(player,  langData.teleportHome.replace("%HOME%", home.getName()));
+        economyManager.getEconomy().pay(cost);
+    }
 
     public PlayerData getPlayerData(UUID playerUUID) {
         return playerData.get(playerUUID);
