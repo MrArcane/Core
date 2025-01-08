@@ -15,10 +15,9 @@ public class YMLFileWrapper {
     public YMLFileWrapper(String dir, String name, Core core)  {
         this.file = new File(core.getDataFolder() + File.separator + dir, name);
 
-        File directory = file.getParentFile();
 
-        if (!directory.exists()) {
-            directory.mkdirs();
+        if (!file.exists()) {
+            core.saveResource("Economy.yml", false);
         }
 
         config = YamlConfiguration.loadConfiguration(file);
@@ -34,10 +33,6 @@ public class YMLFileWrapper {
     }
     public FileConfiguration getConfig() {
         return config;
-    }
-
-    public File getDirectory() {
-        return file.getParentFile();
     }
 
     public String getName() {

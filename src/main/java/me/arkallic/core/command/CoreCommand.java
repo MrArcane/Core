@@ -21,7 +21,7 @@ public class CoreCommand implements CommandExecutor {
         if (sender instanceof Player p) {
             UUID uuid = p.getUniqueId();
              if (args.length == 0) {
-                 send(p, PlayerData.defaultData.RANK);
+                 send(p, PlayerData.defaultData.rank);
                 return true;
             }
             return true;

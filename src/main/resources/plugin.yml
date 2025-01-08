@@ -15,6 +15,9 @@ commands:
   home:
     description: Home command
     permission: core.home
+  homes:
+    description: List of homes
+    permission: core.home
   sethome:
     description: Set your home
     permission: core.home
@@ -26,3 +29,11 @@ commands:
       - removehome
   maxhomes:
     permission: core.maxhomes
+  balance:
+    permission: core.balance
+    aliases:
+      - bal
+  coins:
+    permission: core.coins
+  Economy:
+    permission: core.economy
