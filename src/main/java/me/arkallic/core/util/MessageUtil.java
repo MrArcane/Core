@@ -11,6 +11,10 @@ import java.util.logging.Level;
 public class MessageUtil {
 
 
+    public static String ONLY_PLAYERS_COMMAND = "This command is only available to players.";
+    public static String NO_PERMISSION_COMMAND = "&cYou're not authorized to use this command.";
+    public static String PLAYER_OFFLINE = "&c&lPlayer Offline: &7Couldn't find that player.";
+
     public static String color(String string) {
         return ChatColor.translateAlternateColorCodes('&', string);
     }
