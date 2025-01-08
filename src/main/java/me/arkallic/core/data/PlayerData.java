@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.UUID;
 
+import static me.arkallic.core.util.MessageUtil.send;
+
 
 public class PlayerData extends YMLFileWrapper {
 
@@ -23,7 +25,7 @@ public class PlayerData extends YMLFileWrapper {
 
 
 
-    public void setDefaultData(UUID uuid, String rank, int maxHomes, int currency) {
+    public void setDefaultData(UUID uuid, String rank, int maxHomes, int coins) {
         Player player = Bukkit.getPlayer(uuid);
 
         if (player == null) {
@@ -32,28 +34,28 @@ public class PlayerData extends YMLFileWrapper {
 
         if (!this.exists() || getConfig().getKeys(false).isEmpty()) {
 
-            if (!getConfig().contains(defaultData.DISPLAYNAME)) {
-                getConfig().set(defaultData.DISPLAYNAME, player.getName());
+            if (!getConfig().contains(defaultData.displayname)) {
+                getConfig().set(defaultData.displayname, player.getName());
             }
-            if (!getConfig().contains(defaultData.RANK)) {
-                getConfig().set(defaultData.RANK, rank);
+            if (!getConfig().contains(defaultData.rank)) {
+                getConfig().set(defaultData.rank, rank);
             }
-            if (!getConfig().contains(defaultData.MAX_HOMES)) {
-                getConfig().set(defaultData.MAX_HOMES, maxHomes);
+            if (!getConfig().contains(defaultData.max_homes)) {
+                getConfig().set(defaultData.max_homes, maxHomes);
             }
-            if (!getConfig().contains(defaultData.currency)) {
-                getConfig().set(defaultData.currency, currency);
+            if (!getConfig().contains(defaultData.coins)) {
+                getConfig().set(defaultData.coins, coins);
             }
         }
     }
 
     private void loadHomes() {
 
-        if (getConfig().getConfigurationSection(defaultData.HOMES) == null) {
+        if (getConfig().getConfigurationSection(defaultData.homes) == null) {
             return;
         }
 
-        ConfigurationSection homeSection = this.getConfig().getConfigurationSection(defaultData.HOMES);
+        ConfigurationSection homeSection = this.getConfig().getConfigurationSection(defaultData.homes);
         for (String s : homeSection.getKeys(false)) {
             Home home = new Home(s, homeSection.getLocation(s));
             this.homes.putIfAbsent(home.getName(), home);
@@ -61,11 +63,11 @@ public class PlayerData extends YMLFileWrapper {
     }
 
     public interface defaultData {
-        String RANK = "Settings.Rank";
-        String MAX_HOMES = "Settings.Max-homes";
-        String HOMES = "Homes.";
-        String DISPLAYNAME = "Settings.Display-name";
-        String currency = "Settings.Currency";
+        String rank = "Settings.Rank";
+        String max_homes = "Settings.Max-homes";
+        String homes = "Homes.";
+        String displayname = "Settings.Display-name";
+        String coins = "Settings.Coins";
     }
 
     public boolean exists() {
@@ -73,60 +75,60 @@ public class PlayerData extends YMLFileWrapper {
     }
 
 
-    public int getCurrency() {
-        return getConfig().getInt(defaultData.currency);
+    public int getCoins() {
+        return getConfig().getInt(defaultData.coins);
     }
-    public void setCurrency(int amount) {
-        getConfig().set(defaultData.currency, amount);
+    public void setCoins(int amount, UUID uuid, String message) {
+        send(Bukkit.getPlayer(uuid), message);
+        getConfig().set(defaultData.coins, amount);
     }
+    public void setCoins(int amount) {
+        getConfig().set(defaultData.coins, amount);
+    }
+
 
 
     public HashMap<String, Home> getHomes() {
         return homes;
     }
 
-
-
     public Home getHome(String name) {
         return homes.get(name);
     }
+
     public void setHome(String name, Location location) {
         Home home = new Home(name, location);
         homes.putIfAbsent(name, home);
-        getConfig().set(defaultData.HOMES + name, home.getLocation());
+        getConfig().set(defaultData.homes + name, home.getLocation());
     }
     public void deleteHome(Home home) {
         homes.remove(home.getName());
-        getConfig().set(defaultData.HOMES + home.getName(), null);
+        getConfig().set(defaultData.homes + home.getName(), null);
     }
-    public int HomeAmount() {
-        return this.homes.size();
-    }
+
     public boolean homeExists(String s) {
-        MessageUtil.log(String.valueOf(this.homes.containsKey(s)));
         return this.homes.containsKey(s);
     }
 
-
     public int getMaxHomes() {
 
-        if (!getConfig().contains(defaultData.MAX_HOMES)) {
+        if (!getConfig().contains(defaultData.max_homes)) {
             return 0;
         }
 
-        return this.getConfig().getInt(defaultData.MAX_HOMES);
+        return this.getConfig().getInt(defaultData.max_homes);
     }
     public void setMaxHomes(int amount) {
-        this.getConfig().set(defaultData.MAX_HOMES, amount);
+        this.getConfig().set(defaultData.max_homes, amount);
     }
 
 
 
     public String getDisplayName() {
-        return this.getConfig().getString(defaultData.DISPLAYNAME);
+        return this.getConfig().getString(defaultData.displayname);
     }
     public void setDisplayName(String name) {
-        getConfig().set(defaultData.DISPLAYNAME, name);
+        getConfig().set(defaultData.displayname, name);
     }
 
 
@@ -136,20 +138,20 @@ public class PlayerData extends YMLFileWrapper {
      * add rankup system
      */
     public String getRank() {
-        return getConfig().getString(defaultData.RANK);
+        return getConfig().getString(defaultData.rank);
     }
     public void setRank(String name) {
-        getConfig().set(defaultData.RANK + name, name);
+        getConfig().set(defaultData.rank + name, name);
     }
 
 
     public int getCurrentHomes() {
 
-        if (getConfig().getConfigurationSection(defaultData.HOMES) == null) {
+        if (getConfig().getConfigurationSection(defaultData.homes) == null) {
             return 0;
         }
 
-        return getConfig().getConfigurationSection(defaultData.HOMES).getKeys(false).size();
+        return getConfig().getConfigurationSection(defaultData.homes).getKeys(false).size();
     }
 }
 

@@ -48,22 +48,22 @@ public class SetHomeCommand implements CommandExecutor {
 
             if (currentHomes == maxHomes) {
                 if (!pd.homeExists(input)) {
-                    send(p,  langData.homeLimit);
+                    send(p, langData.homeLimit);
                     return true;
                 }
                 pd.setHome(input, p.getLocation());
-                send(p,  langData.homeModified.replace("%HOME%", input));
+                send(p, langData.homeModified.replace("%HOME%", input));
                 return true;
             }
 
             if (pd.homeExists(input)) {
                 pd.setHome(input, p.getLocation());
-                send(p,  langData.homeModified.replace("%HOME%", input));
+                send(p, langData.homeModified.replace("%HOME%", input));
                 return true;
             }
 
             pd.setHome(input, p.getLocation());
-            send(p,  langData.homeSet.replace("%HOME%", input));
+            send(p, langData.homeSet.replace("%HOME%", input));
             return true;
         }
         return false;
