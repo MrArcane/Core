@@ -1,5 +1,6 @@
 package me.arkallic.core.command.home;
 
+import me.arkallic.core.Core;
 import me.arkallic.core.data.PlayerData;
 import me.arkallic.core.data.LangData;
 import me.arkallic.core.manager.PlayerDataManager;
@@ -20,15 +21,17 @@ public class HomeCommand implements CommandExecutor {
 
     private final PlayerDataManager playerDataManager;
     private final LangData langData;
+    private final Core core;
 
-    public HomeCommand(PlayerDataManager playerDataManager, LangData langData) {
+
+    public HomeCommand(PlayerDataManager playerDataManager, LangData langData, Core core) {
         this.playerDataManager = playerDataManager;
         this.langData = langData;
+        this.core = core;
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
-
 
         if (sender instanceof Player p) {
 
@@ -41,7 +44,7 @@ public class HomeCommand implements CommandExecutor {
                 return true;
             }
             if (args.length == 0) {
-                if (pd.getCurrentHomes() == 0 && homes.size() > 1) {
+                if (pd.getCurrentHomes() == 0) {
                     for (String s : homes.keySet()) {
                         Home home = pd.getHome(s);
                         Location loc = home.getLocation();
@@ -52,8 +55,7 @@ public class HomeCommand implements CommandExecutor {
                 }
                 for (String s : homes.keySet()) {
                     Home home = pd.getHome(s);
-                    p.teleport(home.getLocation());
-                    send(p,  langData.teleportHome.replace("%HOME%", home.getName()));
+                    playerDataManager.teleportHome(uuid, home, core.getHomeTeleportCost());
                     return true;
                 }
 
@@ -62,12 +64,12 @@ public class HomeCommand implements CommandExecutor {
             if (args.length == 1) {
                 String input = args[0].toLowerCase();
                 Home home = pd.getHome(input);
+
                 if (home == null) {
                     send(p,  langData.invalidHome);
                     return true;
                 }
-                p.teleport(home.getLocation());
-                send(p,  langData.teleportHome.replace("%HOME%", home.getName()));
+                playerDataManager.teleportHome(uuid, home, core.getHomeTeleportCost());
                 return true;
             }
 
