@@ -25,7 +25,7 @@ public class PlayerData extends YMLFileWrapper {
 
 
 
-    public void setDefaultData(UUID uuid, String rank, int maxHomes, int coins) {
+    public void setDefaultData(UUID uuid, int maxHomes, int coins) {
         Player player = Bukkit.getPlayer(uuid);
 
         if (player == null) {
@@ -36,9 +36,6 @@ public class PlayerData extends YMLFileWrapper {
 
             if (!getConfig().contains(defaultData.displayname)) {
                 getConfig().set(defaultData.displayname, player.getName());
-            }
-            if (!getConfig().contains(defaultData.rank)) {
-                getConfig().set(defaultData.rank, rank);
             }
             if (!getConfig().contains(defaultData.max_homes)) {
                 getConfig().set(defaultData.max_homes, maxHomes);
@@ -63,7 +60,6 @@ public class PlayerData extends YMLFileWrapper {
     }
 
     public interface defaultData {
-        String rank = "Settings.Rank";
         String max_homes = "Settings.Max-homes";
         String homes = "Homes.";
         String displayname = "Settings.Display-name";
@@ -82,6 +78,15 @@ public class PlayerData extends YMLFileWrapper {
         send(Bukkit.getPlayer(uuid), message);
         getConfig().set(defaultData.coins, amount);
     }
+    public void subtractCoins(int amount) {
+        int finalCoins = getCoins() - amount;
+        getConfig().set(defaultData.coins, finalCoins);
+    }
+    public void addCoins(int amount) {
+        int finalCoins = getCoins() + amount;
+        getConfig().set(defaultData.coins, finalCoins);
+    }
+
     public void setCoins(int amount) {
         getConfig().set(defaultData.coins, amount);
     }
@@ -129,19 +134,6 @@ public class PlayerData extends YMLFileWrapper {
     }
     public void setDisplayName(String name) {
         getConfig().set(defaultData.displayname, name);
-    }
-
-
-    /**
-     * to-do for ranks
-     * finish hierarchy system
-     * add rankup system
-     */
-    public String getRank() {
-        return getConfig().getString(defaultData.rank);
-    }
-    public void setRank(String name) {
-        getConfig().set(defaultData.rank + name, name);
     }
 
 
