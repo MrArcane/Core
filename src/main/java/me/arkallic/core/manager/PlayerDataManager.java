@@ -15,13 +15,11 @@ import static me.arkallic.core.util.MessageUtil.send;
 
 public class PlayerDataManager {
     private final HashMap<UUID, PlayerData> playerData = new HashMap<>();
-    private final RankDataManager rankDataManager;
     private final Core core;
     private final LangData langData;
     private final EconomyManager economyManager;
 
-    public PlayerDataManager(RankDataManager rankDataManager, LangData langData, EconomyManager economyManager, Core core) {
-        this.rankDataManager = rankDataManager;
+    public PlayerDataManager(LangData langData, EconomyManager economyManager, Core core) {
         this.core = core;
         this.langData = langData;
         this.economyManager = economyManager;
@@ -32,7 +30,7 @@ public class PlayerDataManager {
         int defaultCurrency = core.getConfig().getInt(PlayerData.defaultData.coins);
 
         playerData.computeIfAbsent(uuid, _ -> new PlayerData(uuid, core));
-        playerData.get(uuid).setDefaultData(uuid, rankDataManager.getDefault().getName(), defaultMaxHomes, defaultCurrency);
+        playerData.get(uuid).setDefaultData(uuid, defaultMaxHomes, defaultCurrency);
     }
 
     public void unregister(UUID uuid) {
@@ -65,7 +63,7 @@ public class PlayerDataManager {
         player.teleport(home.getLocation());
         pd.setCoins(pd.getCoins() - cost);
         send(player,  langData.teleportHome.replace("%HOME%", home.getName()));
-        economyManager.getEconomy().pay(cost);
+        economyManager.getEconomy().payServer(cost);
     }
 
     public PlayerData getPlayerData(UUID playerUUID) {
