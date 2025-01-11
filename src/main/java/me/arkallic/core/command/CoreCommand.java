@@ -20,10 +20,6 @@ public class CoreCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (sender instanceof Player p) {
             UUID uuid = p.getUniqueId();
-             if (args.length == 0) {
-                 send(p, PlayerData.defaultData.rank);
-                return true;
-            }
             return true;
         }
         return false;
